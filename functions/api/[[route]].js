@@ -20,7 +20,7 @@ const wetThings = [
   'aquarium', 'fish', 'whale', 'dolphin', 'shark', 'aquatic', 'underwater',
   'dive', 'diving', 'swim', 'puddle', 'drip', 'drop', 'leak', 'spill',
   'pour', 'gush', 'flow', 'liquid', 'beverage', 'drink', 'juice', 'soda',
-  'tea', 'coffee', 'beer', 'wine', 'cocktail', 'milkshake', 'smoothie'
+  'tea', 'coffee', 'beer', 'wine', 'cocktail', 'milkshake', 'smoothie', 'mum'
 ];
 
 const moistResponses = [
@@ -121,11 +121,6 @@ function isJsonRequest(request) {
 export async function onRequest(context) {
   const { request } = context;
   const url = new URL(request.url);
-  
-  // Skip if requesting the homepage - let it serve index.html
-  if (url.pathname === '/') {
-    return context.next();
-  }
   
   // Collect text from URL path, query params, and body
   let searchText = url.pathname + ' ' + url.search;
