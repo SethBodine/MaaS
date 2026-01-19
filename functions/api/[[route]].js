@@ -122,9 +122,9 @@ export async function onRequest(context) {
   const { request } = context;
   const url = new URL(request.url);
   
-  // Skip if requesting the homepage
-  if (url.pathname === '/' || url.pathname === '') {
-    return context.env.ASSETS.fetch(request);
+  // Skip if requesting the homepage - let it serve index.html
+  if (url.pathname === '/') {
+    return context.next();
   }
   
   // Collect text from URL path, query params, and body
