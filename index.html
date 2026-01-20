@@ -107,26 +107,26 @@
       <div class="examples">
         <div class="example">
           <div class="example-title">Moist Request (200)</div>
-          <pre><code>curl https://moist.example.com/cake
-curl -X POST https://moist.example.com/api -d "towel"</code></pre>
+          <pre><code>curl <span id="domain1">https://your-site.pages.dev</span>/cake
+curl -X POST <span id="domain2">https://your-site.pages.dev</span>/api -d "towel"</code></pre>
         </div>
         
         <div class="example">
           <div class="example-title">Wet Request (418)</div>
-          <pre><code>curl https://moist.example.com/ocean
-curl https://moist.example.com/api?q=swimming+pool</code></pre>
+          <pre><code>curl <span id="domain3">https://your-site.pages.dev</span>/ocean
+curl <span id="domain4">https://your-site.pages.dev</span>/api?q=swimming+pool</code></pre>
         </div>
         
         <div class="example">
           <div class="example-title">Dry Request (404)</div>
-          <pre><code>curl https://moist.example.com/desert
-curl https://moist.example.com/api?q=dust</code></pre>
+          <pre><code>curl <span id="domain5">https://your-site.pages.dev</span>/desert
+curl <span id="domain6">https://your-site.pages.dev</span>/api?q=dust</code></pre>
         </div>
         
         <div class="example">
           <div class="example-title">Browser Request</div>
-          <pre><code>Visit: https://moist.example.com/sponge
-Visit: https://moist.example.com/waterfall</code></pre>
+          <pre><code>Visit: <span id="domain7">https://your-site.pages.dev</span>/sponge
+Visit: <span id="domain8">https://your-site.pages.dev</span>/waterfall</code></pre>
           <p style="margin-top: 0.5rem; font-size: 0.9rem;">Browsers get pretty HTML responses!</p>
         </div>
       </div>
@@ -137,5 +137,16 @@ Visit: https://moist.example.com/waterfall</code></pre>
       <p>The service fuzzy matches your request (path, query params, POST body) against dictionaries of moist, wet, and dry things. Content negotiation means curl/API clients get JSON while browsers get HTML.</p>
     </div>
   </div>
+  
+  <script>
+    // Replace placeholder domains with actual site domain
+    const actualDomain = window.location.origin;
+    for (let i = 1; i <= 8; i++) {
+      const elem = document.getElementById('domain' + i);
+      if (elem) {
+        elem.textContent = actualDomain;
+      }
+    }
+  </script>
 </body>
 </html>
