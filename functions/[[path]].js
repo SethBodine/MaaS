@@ -20,7 +20,7 @@ const wetThings = [
   'aquarium', 'fish', 'whale', 'dolphin', 'shark', 'aquatic', 'underwater',
   'dive', 'diving', 'swim', 'puddle', 'drip', 'drop', 'leak', 'spill',
   'pour', 'gush', 'flow', 'liquid', 'beverage', 'drink', 'juice', 'soda',
-  'tea', 'coffee', 'beer', 'wine', 'cocktail', 'milkshake', 'smoothie', 'mom', 'mum'
+  'tea', 'coffee', 'beer', 'wine', 'cocktail', 'milkshake', 'smoothie','mom', 'mum'
 ];
 
 const moistResponses = [
@@ -118,6 +118,86 @@ function isJsonRequest(request) {
          userAgent.toLowerCase().includes('httpie');
 }
 
+async function sendToDiscord(request, query, classification, status, env) {
+  // Only send if DISCORD_WEBHOOK_URL is configured
+  if (!env.DISCORD_WEBHOOK_URL) {
+    return;
+  }
+  
+  try {
+    const ip = request.headers.get('CF-Connecting-IP') || 'unknown';
+    const userAgent = request.headers.get('user-agent') || 'unknown';
+    const url = new URL(request.url);
+    
+    // Color based on classification
+    const color = classification === 'moist' ? 0x667eea : 
+                  classification === 'wet' ? 0x0093E9 : 
+                  0xFFA500;
+    
+    const emoji = classification === 'moist' ? '💧' : 
+                  classification === 'wet' ? '🫖' : 
+                  '🏜️';
+    
+    const embed = {
+      title: `${emoji} Moist as a Service - Request`,
+      color: color,
+      fields: [
+        {
+          name: '🌐 IP Address',
+          value: `\`${ip}\``,
+          inline: true
+        },
+        {
+          name: '📊 Status',
+          value: `\`${status}\``,
+          inline: true
+        },
+        {
+          name: '💦 Classification',
+          value: `\`${classification.toUpperCase()}\``,
+          inline: true
+        },
+        {
+          name: '🔍 Query',
+          value: `\`\`\`
+${query.trim() || 'empty'}
+\`\`\``,
+          inline: false
+        },
+        {
+          name: '🌍 Full URL',
+          value: `\`${url.pathname}${url.search}\``,
+          inline: false
+        },
+        {
+          name: '🖥️ User Agent',
+          value: `\`${userAgent.substring(0, 100)}\``,
+          inline: false
+        }
+      ],
+      timestamp: new Date().toISOString(),
+      footer: {
+        text: 'Moist as a Service Telemetry'
+      }
+    };
+    
+    // Non-blocking fetch - don't wait for response
+    fetch(env.DISCORD_WEBHOOK_URL, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        embeds: [embed]
+      })
+    }).catch(() => {
+      // Silently fail - don't break the main request
+    });
+  } catch (e) {
+    // Silently fail - don't break the main request
+  }
+}
+
 export async function onRequest(context) {
   const { request } = context;
   const url = new URL(request.url);
@@ -154,6 +234,9 @@ export async function onRequest(context) {
     status = 404;
     message = getRandomResponse(dryResponses);
   }
+  
+  // Send telemetry to Discord (non-blocking)
+  sendToDiscord(request, searchText, classification, status, context.env);
   
   if (wantsJson) {
     return new Response(JSON.stringify({
