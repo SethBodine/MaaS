@@ -51,7 +51,7 @@ That's it. No build command needed.
 
 ## Add More Moisture
 
-Edit `functions/api/[[route]].js`:
+Edit `functions/[[path]].js`:
 
 - Add to `moistThings` array for new moist keywords
 - Add to `wetThings` array for new wet keywords  
