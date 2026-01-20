@@ -20,7 +20,7 @@ const wetThings = [
   'aquarium', 'fish', 'whale', 'dolphin', 'shark', 'aquatic', 'underwater',
   'dive', 'diving', 'swim', 'puddle', 'drip', 'drop', 'leak', 'spill',
   'pour', 'gush', 'flow', 'liquid', 'beverage', 'drink', 'juice', 'soda',
-  'tea', 'coffee', 'beer', 'wine', 'cocktail', 'milkshake', 'smoothie'
+  'tea', 'coffee', 'beer', 'wine', 'cocktail', 'milkshake', 'smoothie', 'mom', 'mum'
 ];
 
 const moistResponses = [
