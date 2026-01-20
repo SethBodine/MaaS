@@ -20,7 +20,7 @@ const wetThings = [
   'aquarium', 'fish', 'whale', 'dolphin', 'shark', 'aquatic', 'underwater',
   'dive', 'diving', 'swim', 'puddle', 'drip', 'drop', 'leak', 'spill',
   'pour', 'gush', 'flow', 'liquid', 'beverage', 'drink', 'juice', 'soda',
-  'tea', 'coffee', 'beer', 'wine', 'cocktail', 'milkshake', 'smoothie','mom', 'mum'
+  'tea', 'coffee', 'beer', 'wine', 'cocktail', 'milkshake', 'smoothie', 'mom', 'mum'
 ];
 
 const moistResponses = [
@@ -120,7 +120,8 @@ function isJsonRequest(request) {
 
 async function sendToDiscord(request, query, classification, status, env) {
   // Only send if DISCORD_WEBHOOK_URL is configured
-  if (!env.DISCORD_WEBHOOK_URL) {
+  if (!env || !env.DISCORD_WEBHOOK_URL) {
+    console.log('Discord webhook not configured');
     return;
   }
   
@@ -181,6 +182,8 @@ ${query.trim() || 'empty'}
       }
     };
     
+    console.log('Sending to Discord:', env.DISCORD_WEBHOOK_URL.substring(0, 50) + '...');
+    
     // Non-blocking fetch - don't wait for response
     fetch(env.DISCORD_WEBHOOK_URL, {
       method: 'POST',
@@ -190,11 +193,13 @@ ${query.trim() || 'empty'}
       body: JSON.stringify({
         embeds: [embed]
       })
-    }).catch(() => {
-      // Silently fail - don't break the main request
+    }).then(response => {
+      console.log('Discord response status:', response.status);
+    }).catch(err => {
+      console.error('Discord error:', err);
     });
   } catch (e) {
-    // Silently fail - don't break the main request
+    console.error('Discord telemetry error:', e);
   }
 }
 
@@ -236,7 +241,9 @@ export async function onRequest(context) {
   }
   
   // Send telemetry to Discord (non-blocking)
-  sendToDiscord(request, searchText, classification, status, context.env);
+  context.waitUntil(
+    sendToDiscord(request, searchText, classification, status, context.env)
+  );
   
   if (wantsJson) {
     return new Response(JSON.stringify({
