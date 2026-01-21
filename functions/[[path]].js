@@ -119,13 +119,11 @@ function isJsonRequest(request) {
 }
 
 async function sendToDiscord(request, query, classification, status, env) {
-  // Only send if DISCORD_WEBHOOK_URL is configured
-  if (!env || !env.DISCORD_WEBHOOK_URL) {
-    console.log('Discord webhook not configured');
-    return;
-  }
-  
   try {
+    if (!env || !env.DISCORD_WEBHOOK_URL) {
+      return Promise.resolve();
+    }
+    
     const ip = request.headers.get('CF-Connecting-IP') || 'unknown';
     const userAgent = request.headers.get('user-agent') || 'unknown';
     const url = new URL(request.url);
@@ -182,34 +180,34 @@ ${query.trim() || 'empty'}
       }
     };
     
-    console.log('Sending to Discord:', env.DISCORD_WEBHOOK_URL.substring(0, 50) + '...');
+    const payload = JSON.stringify({ embeds: [embed] });
     
-    // Non-blocking fetch - don't wait for response
-    fetch(env.DISCORD_WEBHOOK_URL, {
+    // Make the request and return the promise
+    return fetch(env.DISCORD_WEBHOOK_URL, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
       },
-      body: JSON.stringify({
-        embeds: [embed]
-      })
+      body: payload
     }).then(response => {
-      console.log('Discord response status:', response.status);
-    }).catch(err => {
-      console.error('Discord error:', err);
+      if (!response.ok) {
+        throw new Error(`Discord webhook returned ${response.status}`);
+      }
+      return response;
     });
   } catch (e) {
     console.error('Discord telemetry error:', e);
+    return Promise.reject(e);
   }
 }
 
 export async function onRequest(context) {
-  const { request } = context;
+  const { request, env } = context;
   const url = new URL(request.url);
   
   // Let homepage serve index.html
   if (url.pathname === '/') {
-    return context.env.ASSETS.fetch(request);
+    return env.ASSETS.fetch(request);
   }
   
   // Collect text from URL path, query params, and body
@@ -240,21 +238,25 @@ export async function onRequest(context) {
     message = getRandomResponse(dryResponses);
   }
   
-  // Send telemetry to Discord (non-blocking)
-  context.waitUntil(
-    sendToDiscord(request, searchText, classification, status, context.env)
-  );
+  // Send telemetry to Discord
+  if (env.DISCORD_WEBHOOK_URL) {
+    const telemetryPromise = sendToDiscord(request, searchText, classification, status, env);
+    context.waitUntil(telemetryPromise);
+  }
   
   if (wantsJson) {
     return new Response(JSON.stringify({
       moisture: classification,
       message: message,
-      status: status
+      status: status,
+      telemetry: env.DISCORD_WEBHOOK_URL ? 'enabled' : 'disabled',
+      webhook_preview: env.DISCORD_WEBHOOK_URL ? env.DISCORD_WEBHOOK_URL.substring(0, 50) + '...' : 'not set'
     }), {
       status: status,
       headers: {
         'Content-Type': 'application/json',
-        'X-Moisture-Level': classification
+        'X-Moisture-Level': classification,
+        'X-Telemetry': env.DISCORD_WEBHOOK_URL ? 'enabled' : 'disabled'
       }
     });
   }
@@ -308,6 +310,14 @@ export async function onRequest(context) {
       font-size: 5rem;
       margin-bottom: 1rem;
     }
+    .telemetry {
+      font-size: 0.8rem;
+      color: #999;
+      margin-top: 1rem;
+      padding: 0.5rem;
+      background: #f0f0f0;
+      border-radius: 5px;
+    }
     a {
       color: #667eea;
       text-decoration: none;
@@ -323,6 +333,7 @@ export async function onRequest(context) {
     <div class="status">Moisture Level: ${classification.toUpperCase()}</div>
     <div class="message">${message}</div>
     <p><a href="/">← Back to Moist as a Service</a></p>
+    <div class="telemetry">Telemetry: ${env.DISCORD_WEBHOOK_URL ? '✅ Enabled' : '❌ Disabled'}</div>
   </div>
 </body>
 </html>`;
@@ -331,7 +342,8 @@ export async function onRequest(context) {
     status: status,
     headers: {
       'Content-Type': 'text/html',
-      'X-Moisture-Level': classification
+      'X-Moisture-Level': classification,
+      'X-Telemetry': env.DISCORD_WEBHOOK_URL ? 'enabled' : 'disabled'
     }
   });
 }
