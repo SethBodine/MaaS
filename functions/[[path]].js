@@ -21,6 +21,7 @@ const wetThings = [
   'dive', 'diving', 'swim', 'puddle', 'drip', 'drop', 'leak', 'spill',
   'pour', 'gush', 'flow', 'liquid', 'beverage', 'drink', 'juice', 'soda',
   'tea', 'coffee', 'beer', 'wine', 'cocktail', 'milkshake', 'smoothie', 'mom', 'mum'
+
 ];
 
 const moistResponses = [
@@ -205,8 +206,10 @@ export async function onRequest(context) {
   const { request, env } = context;
   const url = new URL(request.url);
   
-  // Let homepage serve index.html
-  if (url.pathname === '/') {
+  // Let homepage and static assets serve normally
+  if (url.pathname === '/' || 
+      url.pathname === '/favicon.ico' ||
+      url.pathname.match(/.(ico|png|jpg|jpeg|gif|svg|css|js|woff|woff2|ttf)$/)) {
     return env.ASSETS.fetch(request);
   }
   
@@ -248,15 +251,12 @@ export async function onRequest(context) {
     return new Response(JSON.stringify({
       moisture: classification,
       message: message,
-      status: status,
-      telemetry: env.DISCORD_WEBHOOK_URL ? 'enabled' : 'disabled',
-      webhook_preview: env.DISCORD_WEBHOOK_URL ? env.DISCORD_WEBHOOK_URL.substring(0, 50) + '...' : 'not set'
+      status: status
     }), {
       status: status,
       headers: {
         'Content-Type': 'application/json',
-        'X-Moisture-Level': classification,
-        'X-Telemetry': env.DISCORD_WEBHOOK_URL ? 'enabled' : 'disabled'
+        'X-Moisture-Level': classification
       }
     });
   }
@@ -310,14 +310,6 @@ export async function onRequest(context) {
       font-size: 5rem;
       margin-bottom: 1rem;
     }
-    .telemetry {
-      font-size: 0.8rem;
-      color: #999;
-      margin-top: 1rem;
-      padding: 0.5rem;
-      background: #f0f0f0;
-      border-radius: 5px;
-    }
     a {
       color: #667eea;
       text-decoration: none;
@@ -333,7 +325,6 @@ export async function onRequest(context) {
     <div class="status">Moisture Level: ${classification.toUpperCase()}</div>
     <div class="message">${message}</div>
     <p><a href="/">← Back to Moist as a Service</a></p>
-    <div class="telemetry">Telemetry: ${env.DISCORD_WEBHOOK_URL ? '✅ Enabled' : '❌ Disabled'}</div>
   </div>
 </body>
 </html>`;
@@ -342,8 +333,7 @@ export async function onRequest(context) {
     status: status,
     headers: {
       'Content-Type': 'text/html',
-      'X-Moisture-Level': classification,
-      'X-Telemetry': env.DISCORD_WEBHOOK_URL ? 'enabled' : 'disabled'
+      'X-Moisture-Level': classification
     }
   });
 }
