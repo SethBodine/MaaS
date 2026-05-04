@@ -107,26 +107,26 @@
       <div class="examples">
         <div class="example">
           <div class="example-title">Moist Request (200)</div>
-          <pre><code>curl <span id="domain1">https://your-site.pages.dev</span>/cake
-curl <span id="domain2">https://your-site.pages.dev</span>/sponge</code></pre>
+          <pre><code>curl <span class="domain">https://your-site.pages.dev</span>/cake
+curl <span class="domain">https://your-site.pages.dev</span>/sponge</code></pre>
         </div>
         
         <div class="example">
           <div class="example-title">Wet Request (418)</div>
-          <pre><code>curl <span id="domain3">https://your-site.pages.dev</span>/ocean
-curl <span id="domain4">https://your-site.pages.dev</span>/api?q=swimming+pool</code></pre>
+          <pre><code>curl <span class="domain">https://your-site.pages.dev</span>/ocean
+curl <span class="domain">https://your-site.pages.dev</span>/api?q=swimming+pool</code></pre>
         </div>
         
         <div class="example">
           <div class="example-title">Dry Request (404)</div>
-          <pre><code>curl <span id="domain5">https://your-site.pages.dev</span>/desert
-curl <span id="domain6">https://your-site.pages.dev</span>/api?q=dust</code></pre>
+          <pre><code>curl <span class="domain">https://your-site.pages.dev</span>/desert
+curl <span class="domain">https://your-site.pages.dev</span>/api?q=dust</code></pre>
         </div>
         
         <div class="example">
           <div class="example-title">Browser Request</div>
-          <pre><code>Visit: <span id="domain7">https://your-site.pages.dev</span>/sponge
-Visit: <span id="domain8">https://your-site.pages.dev</span>/waterfall</code></pre>
+          <pre><code>Visit: <span class="domain">https://your-site.pages.dev</span>/sponge
+Visit: <span class="domain">https://your-site.pages.dev</span>/waterfall</code></pre>
           <p style="margin-top: 0.5rem; font-size: 0.9rem;">Browsers get pretty HTML responses!</p>
         </div>
       </div>
@@ -134,19 +134,13 @@ Visit: <span id="domain8">https://your-site.pages.dev</span>/waterfall</code></p
     
     <div class="section">
       <h2>How It Works</h2>
-      <p>The service fuzzy matches your request (path, query params, POST body) against dictionaries of moist, wet, and dry things. Content negotiation means curl/API clients get JSON while browsers get HTML.</p>
+      <p>The service fuzzy matches your request path and query params against dictionaries of moist, wet, and dry things. Content negotiation means curl and API clients get JSON while browsers get HTML.</p>
     </div>
   </div>
   
   <script>
-    // Replace placeholder domains with actual site domain
-    const actualDomain = window.location.origin;
-    for (let i = 1; i <= 8; i++) {
-      const elem = document.getElementById('domain' + i);
-      if (elem) {
-        elem.textContent = actualDomain;
-      }
-    }
+    const origin = window.location.origin;
+    document.querySelectorAll('.domain').forEach(el => el.textContent = origin);
   </script>
 </body>
 </html>
