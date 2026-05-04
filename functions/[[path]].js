@@ -93,7 +93,7 @@ const wrongMethodResponses = [
 function getSecurityHeaders(isJson = false) {
   const csp = isJson
     ? "default-src 'none'"
-    : "default-src 'none'; style-src 'unsafe-inline'";
+    : "default-src 'none'; style-src 'unsafe-inline'; script-src 'unsafe-inline'; img-src 'self'";
   return {
     'Access-Control-Allow-Origin': '*',
     'X-Content-Type-Options': 'nosniff',
