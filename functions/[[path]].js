@@ -136,13 +136,9 @@ function getRandomResponse(responses) {
 }
 
 function isJsonRequest(request) {
+  // Browsers always include text/html in Accept; API clients and CLI tools typically don't
   const accept = request.headers.get('accept') || '';
-  const userAgent = request.headers.get('user-agent') || '';
-  
-  return accept.includes('application/json') || 
-         userAgent.toLowerCase().includes('curl') ||
-         userAgent.toLowerCase().includes('wget') ||
-         userAgent.toLowerCase().includes('httpie');
+  return !accept.includes('text/html');
 }
 
 async function sendToDiscord(request, query, classification, status, env) {
