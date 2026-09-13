@@ -2,26 +2,78 @@
 // Fuzzy matches requests for moist/wet/dry content
 
 const moistThings = [
-  'cake', 'brownies', 'towel', 'sponge', 'soil', 'earth', 'ground',
-  'cookie', 'muffin', 'bread', 'cupcake', 'moist', 'moisture', 'damp',
-  'humid', 'humidity', 'swamp', 'bog', 'marsh', 'wetland', 'dew',
+  // baked goods & food
+  'cake', 'brownies', 'brownie', 'cookie', 'muffin', 'bread', 'cupcake',
+  'batter', 'dough', 'pastry', 'pie', 'gingerbread', 'cheesecake',
+  'pudding', 'custard', 'yogurt', 'yoghurt', 'compote', 'jam', 'jelly',
+  'gravy', 'sauce', 'marinade', 'brine', 'meat', 'ham', 'turkey', 'chicken',
+
+  // dampness / weather
+  'moist', 'moisture', 'damp', 'dampness', 'humid', 'humidity', 'clammy',
+  'dank', 'muggy', 'sticky', 'sweaty', 'sweat', 'perspiration', 'dew',
   'condensation', 'steam', 'vapor', 'vapour', 'fog', 'mist', 'drizzle',
-  'skin', 'lips', 'eye', 'mouth', 'tongue', 'grass', 'morning',
-  'basement', 'cellar', 'bathroom', 'shower', 'sauna', 'jungle',
-  'rainforest', 'forest', 'moss', 'mushroom', 'fungi', 'compost'
+  'petrichor', 'monsoon', 'tropical', 'tropics',
+
+  // body / personal care
+  'skin', 'lips', 'eye', 'mouth', 'tongue', 'palm', 'armpit', 'brow',
+  'saliva', 'drool', 'spit', 'tears', 'crying', 'breath', 'kiss', 'hug',
+  'lotion', 'moisturizer', 'moisturiser', 'serum', 'cream', 'balm', 'gel',
+  'toner', 'facemask',
+
+  // fabric / cleaning
+  'towel', 'sponge', 'washcloth', 'flannel', 'dishcloth', 'napkin',
+  'tissue', 'wipe', 'towelette', 'diaper', 'terrycloth', 'laundry',
+
+  // earth / nature
+  'soil', 'earth', 'ground', 'mud', 'sludge', 'silt', 'loam', 'clay',
+  'peat', 'mulch', 'swamp', 'bog', 'marsh', 'wetland', 'wetlands',
+  'grass', 'lawn', 'meadow', 'sod', 'turf', 'moss', 'lichen', 'algae',
+  'mold', 'mould', 'mildew', 'must', 'musty', 'earthy', 'mushroom',
+  'fungi', 'compost', 'garden', 'flowerbed', 'greenhouse', 'terrarium',
+  'orchid', 'fern', 'jungle', 'rainforest', 'forest',
+
+  // places
+  'morning', 'basement', 'cellar', 'bathroom', 'shower', 'sauna',
+  'cave', 'cavern', 'grotto', 'attic', 'garage', 'gym', 'yoga', 'workout'
 ];
 
 const wetThings = [
+  // bodies of water
   'water', 'ocean', 'sea', 'lake', 'river', 'stream', 'creek', 'pond',
-  'pool', 'swimming', 'rain', 'rainy', 'storm', 'thunderstorm', 'downpour',
-  'deluge', 'flood', 'tsunami', 'wave', 'splash', 'wet', 'soaked',
-  'drenched', 'saturated', 'waterfall', 'cascade', 'rapids', 'torrent',
-  'shower', 'bath', 'tub', 'sink', 'faucet', 'tap', 'hose', 'sprinkler',
-  'aquarium', 'fish', 'whale', 'dolphin', 'shark', 'aquatic', 'underwater',
-  'dive', 'diving', 'swim', 'puddle', 'drip', 'drop', 'leak', 'spill',
-  'pour', 'gush', 'flow', 'liquid', 'beverage', 'drink', 'juice', 'soda',
-  'tea', 'coffee', 'beer', 'wine', 'cocktail', 'milkshake', 'smoothie', 'mom', 'mum'
+  'pool', 'bay', 'gulf', 'strait', 'channel', 'lagoon', 'estuary',
+  'delta', 'fjord', 'reservoir', 'canal', 'harbor', 'harbour', 'marina',
+  'dock', 'pier', 'beach', 'shore', 'coast', 'coastal', 'moat', 'aquifer',
+  'watertable', 'groundwater', 'floodplain',
 
+  // weather / precipitation
+  'rain', 'rainy', 'storm', 'thunderstorm', 'downpour', 'deluge', 'flood',
+  'tsunami', 'wave', 'splash', 'wet', 'soaked', 'drenched', 'saturated',
+  'waterfall', 'cascade', 'rapids', 'torrent', 'tide', 'tidal', 'current',
+  'undertow', 'whirlpool', 'geyser', 'spring', 'hotspring', 'glacier',
+  'iceberg', 'snowmelt', 'sleet', 'hail', 'typhoon', 'hurricane',
+  'cyclone', 'squall', 'cloudburst', 'pouring',
+
+  // swimming / activities
+  'swimming', 'shower', 'bath', 'tub', 'bathtub', 'jacuzzi', 'hottub',
+  'sink', 'faucet', 'tap', 'hose', 'sprinkler', 'aquarium', 'fish',
+  'whale', 'dolphin', 'shark', 'aquatic', 'underwater', 'dive', 'diving',
+  'swim', 'snorkel', 'scuba', 'submarine', 'kayak', 'canoe', 'raft',
+  'boat', 'ship', 'sail', 'yacht', 'ferry', 'surf', 'surfing', 'surfboard',
+  'jetski', 'waterpark', 'waterslide', 'watergun', 'squirtgun',
+  'supersoaker', 'waterballoon', 'waterfight',
+
+  // household / plumbing
+  'puddle', 'drip', 'drop', 'leak', 'spill', 'pour', 'gush', 'flow',
+  'washingmachine', 'dishwasher', 'mop', 'bucket', 'bidet', 'toilet',
+  'flush', 'plumbing', 'pipe', 'drain', 'sewage', 'sewer', 'gutter',
+  'drainpipe', 'irrigation', 'raincoat', 'umbrella', 'galoshes', 'waders',
+  'wetsuit',
+
+  // liquid / drinks
+  'liquid', 'beverage', 'drink', 'juice', 'soda', 'cola', 'lemonade',
+  'tea', 'coffee', 'beer', 'wine', 'champagne', 'whiskey', 'vodka', 'rum',
+  'gin', 'tequila', 'cider', 'kombucha', 'cocktail', 'milkshake',
+  'smoothie', 'milk', 'broth', 'soup', 'stew', 'mom', 'mum'
 ];
 
 const moistResponses = [
