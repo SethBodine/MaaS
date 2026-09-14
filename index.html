@@ -3,7 +3,68 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Moist as a Service</title>
+  <title>Moist as a Service — The World's Premier Moisture Detection API (Parody)</title>
+  <meta name="description" content="A free, joke HTTP API that classifies any request as moist, wet, or dry using fuzzy keyword matching. A parody novelty API in the style of 'No as a Service' — not a real scientific tool.">
+  <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1">
+  <link rel="canonical" href="https://maas.insecure.co.nz/">
+  <link rel="icon" type="image/x-icon" href="/favicon.ico">
+
+  <!-- Open Graph -->
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://maas.insecure.co.nz/">
+  <meta property="og:title" content="💧 Moist as a Service — Moisture Detection API (Parody)">
+  <meta property="og:description" content="curl any path and get back 200 (moist), 418 I'm a teapot (too wet), or 404 (too dry). A joke API, not a real moisture sensor.">
+  <meta property="og:site_name" content="Moist as a Service">
+  <meta property="og:locale" content="en_NZ">
+
+  <!-- Twitter -->
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="💧 Moist as a Service — Moisture Detection API (Parody)">
+  <meta name="twitter:description" content="A joke HTTP API that classifies requests as moist, wet, or dry. Not a real scientific tool.">
+
+  <!-- Structured data -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "WebAPI",
+    "name": "Moist as a Service",
+    "url": "https://maas.insecure.co.nz/",
+    "description": "A parody/novelty HTTP API, in the style of 'No as a Service', that fuzzy-matches keywords in a request's path, query string, and POST body against dictionaries of moist, wet, and dry terms, and returns 200 (moist), 418 I'm a teapot (wet), or 404 (dry). It is a joke and does not perform any real moisture detection or scientific measurement of any kind.",
+    "applicationCategory": "DeveloperApplication",
+    "genre": "Parody / novelty API",
+    "isAccessibleForFree": true,
+    "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" }
+  }
+  </script>
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": [
+      {
+        "@type": "Question",
+        "name": "Is Moist as a Service a real moisture sensor or scientific tool?",
+        "acceptedAnswer": { "@type": "Answer", "text": "No. It's a parody/joke API inspired by projects like 'No as a Service'. It does fuzzy text matching against word lists, not any physical or scientific measurement of moisture." }
+      },
+      {
+        "@type": "Question",
+        "name": "How does the classification actually work?",
+        "acceptedAnswer": { "@type": "Answer", "text": "It extracts text from the request's URL path, query parameters, and POST body, then fuzzy-matches (with 1-character typo tolerance) against three word dictionaries: moist, wet, and dry. Whichever list has the strongest match determines the response." }
+      },
+      {
+        "@type": "Question",
+        "name": "What do the response codes mean?",
+        "acceptedAnswer": { "@type": "Answer", "text": "200 OK means your request matched the 'moist' dictionary. 418 I'm a teapot means it matched 'wet' (too wet). 404 Not Found means it matched 'dry' or nothing at all (moist not found)." }
+      },
+      {
+        "@type": "Question",
+        "name": "Do I get JSON or HTML back?",
+        "acceptedAnswer": { "@type": "Answer", "text": "The API uses content negotiation: tools like curl, wget, or httpie get a JSON response, while browsers get a styled HTML page with the same classification." }
+      }
+    ]
+  }
+  </script>
+
   <style>
     * { margin: 0; padding: 0; box-sizing: border-box; }
     body {
@@ -91,6 +152,7 @@
     <div class="section">
       <h2>What is this?</h2>
       <p>Moist as a Service analyzes your requests and determines if they're moist, wet, or dry. Because the internet needed this.</p>
+      <p style="margin-top: 1rem; opacity: 0.85; font-size: 0.95rem;">⚠️ This is a parody / novelty API in the style of <a href="https://github.com/vickyqian/noservice" style="color: #ffd700;">No as a Service</a>. It does fuzzy text matching against word lists for fun — it is not a real moisture sensor or a scientific measurement tool of any kind.</p>
     </div>
     
     <div class="section">
@@ -107,26 +169,26 @@
       <div class="examples">
         <div class="example">
           <div class="example-title">Moist Request (200)</div>
-          <pre><code>curl <span class="domain">https://your-site.pages.dev</span>/cake
-curl <span class="domain">https://your-site.pages.dev</span>/sponge</code></pre>
+          <pre><code>curl <span class="domain">https://maas.insecure.co.nz</span>/cake
+curl <span class="domain">https://maas.insecure.co.nz</span>/sponge</code></pre>
         </div>
         
         <div class="example">
           <div class="example-title">Wet Request (418)</div>
-          <pre><code>curl <span class="domain">https://your-site.pages.dev</span>/ocean
-curl <span class="domain">https://your-site.pages.dev</span>/api?q=swimming+pool</code></pre>
+          <pre><code>curl <span class="domain">https://maas.insecure.co.nz</span>/ocean
+curl <span class="domain">https://maas.insecure.co.nz</span>/api?q=swimming+pool</code></pre>
         </div>
         
         <div class="example">
           <div class="example-title">Dry Request (404)</div>
-          <pre><code>curl <span class="domain">https://your-site.pages.dev</span>/desert
-curl <span class="domain">https://your-site.pages.dev</span>/api?q=dust</code></pre>
+          <pre><code>curl <span class="domain">https://maas.insecure.co.nz</span>/desert
+curl <span class="domain">https://maas.insecure.co.nz</span>/api?q=dust</code></pre>
         </div>
         
         <div class="example">
           <div class="example-title">Browser Request</div>
-          <pre><code>Visit: <span class="domain">https://your-site.pages.dev</span>/sponge
-Visit: <span class="domain">https://your-site.pages.dev</span>/waterfall</code></pre>
+          <pre><code>Visit: <span class="domain">https://maas.insecure.co.nz</span>/sponge
+Visit: <span class="domain">https://maas.insecure.co.nz</span>/waterfall</code></pre>
           <p style="margin-top: 0.5rem; font-size: 0.9rem;">Browsers get pretty HTML responses!</p>
         </div>
       </div>
@@ -135,6 +197,28 @@ Visit: <span class="domain">https://your-site.pages.dev</span>/waterfall</code><
     <div class="section">
       <h2>How It Works</h2>
       <p>The service fuzzy matches your request path and query params against dictionaries of moist, wet, and dry things. Content negotiation means curl and API clients get JSON while browsers get HTML.</p>
+    </div>
+
+    <div class="section">
+      <h2>FAQ</h2>
+      <div class="examples">
+        <div class="example">
+          <div class="example-title">Is this a real moisture sensor or scientific tool?</div>
+          <p>No. It's a parody/joke API inspired by projects like "No as a Service". It does fuzzy text matching against word lists, not any physical or scientific measurement of moisture.</p>
+        </div>
+        <div class="example">
+          <div class="example-title">How does the classification actually work?</div>
+          <p>It extracts text from the request's URL path, query parameters, and POST body, then fuzzy-matches (with 1-character typo tolerance) against three word dictionaries: moist, wet, and dry.</p>
+        </div>
+        <div class="example">
+          <div class="example-title">What do the response codes mean?</div>
+          <p>200 OK = matched "moist". 418 I'm a teapot = matched "wet" (too wet). 404 Not Found = matched "dry", or nothing at all (moist not found).</p>
+        </div>
+        <div class="example">
+          <div class="example-title">Do I get JSON or HTML back?</div>
+          <p>Content negotiation: curl/wget/httpie get JSON, browsers get a styled HTML page with the same classification.</p>
+        </div>
+      </div>
     </div>
   </div>
   
